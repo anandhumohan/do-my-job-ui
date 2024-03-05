@@ -1,58 +1,103 @@
-import React from 'react';
-import { TextField, Button, Typography, Paper, Box } from '@mui/material';
-//import './Sidebar.css'; // You might need to adjust your CSS after adding Material-UI components
+import React, { useState, useEffect } from 'react';
+import { TextField, Typography, Paper, Box, Button } from '@mui/material';
 
-const Sidebar = ({ selectedNode }) => {
+const Sidebar = ({ selectedNode, updateNodeData }) => {
+    // Initialize state for each input field
+    const [label, setLabel] = useState('');
+    const [emailFrom, setEmailFrom] = useState('');
+    const [emailTo, setEmailTo] = useState('');
+    const [emailSubject, setEmailSubject] = useState('');
+    const [emailBody, setEmailBody] = useState('');
+
+    // Effect to set input fields based on the selected node
+    useEffect(() => {
+        if (selectedNode) {
+            setLabel(selectedNode.data.label || '');
+            setEmailFrom(selectedNode.data.from || '');
+            setEmailTo(selectedNode.data.to || '');
+            setEmailSubject(selectedNode.data.subject || '');
+            setEmailBody(selectedNode.data.body || '');
+        } else {
+            // Reset all fields if no node is selected
+            setLabel('');
+            setEmailFrom('');
+            setEmailTo('');
+            setEmailSubject('');
+            setEmailBody('');
+        }
+    }, [selectedNode]);
+
+    // Handler to update the node data and state
+    const handleInputChange = (value, field) => {
+        // Update the local state
+        switch (field) {
+            case 'label':
+                setLabel(value);
+                break;
+            case 'from':
+                setEmailFrom(value);
+                break;
+            case 'to':
+                setEmailTo(value);
+                break;
+            case 'subject':
+                setEmailSubject(value);
+                break;
+            case 'body':
+                setEmailBody(value);
+                break;
+            default:
+                break;
+        }
+
+        // Propagate changes to the node's data in React Flow
+        if (selectedNode) {
+            const updatedData = { ...selectedNode.data, [field]: value };
+            updateNodeData(selectedNode.id, updatedData);
+        }
+    };
+
     const onDragStart = (event, nodeType) => {
         event.dataTransfer.setData('application/reactflow', nodeType);
         event.dataTransfer.effectAllowed = 'move';
     };
 
-    const renderNodeDetails = (node) => {
-        if (!node) {
-            return <Typography></Typography>;
-        }
-
-        switch (node.type) {
-            case 'initialTask':
+    const renderPropertiesForm = () => {
+        switch (selectedNode?.type) {
+            case 'Email':
                 return (
-                    <Box>
-                        <TextField label="Name" variant="outlined" fullWidth margin="normal" placeholder="Enter name" />
-                    </Box>
+                    <>
+                        <TextField label="From" fullWidth margin="normal" value={emailFrom} onChange={(e) => handleInputChange(e.target.value, 'from')} />
+                        <TextField label="To" fullWidth margin="normal" value={emailTo} onChange={(e) => handleInputChange(e.target.value, 'to')} />
+                        <TextField label="Subject" fullWidth margin="normal" value={emailSubject} onChange={(e) => handleInputChange(e.target.value, 'subject')} />
+                        <TextField label="Body" fullWidth multiline rows={4} margin="normal" value={emailBody} onChange={(e) => handleInputChange(e.target.value, 'body')} />
+                    </>
                 );
-            case 'email':
-                return (
-                    <Box>
-                        <TextField label="From" variant="outlined" fullWidth margin="normal" placeholder="From" />
-                        <TextField label="To" variant="outlined" fullWidth margin="normal" placeholder="To" />
-                        <TextField label="Subject" variant="outlined" fullWidth margin="normal" placeholder="Subject" />
-                    </Box>
-                );
-            case 'dbUpdate':
-                return (
-                    <Box>
-                        <TextField label="DB Name" variant="outlined" fullWidth margin="normal" placeholder="Enter DB name" />
-                    </Box>
-                );
+            case 'DB Update':
+                return <Typography></Typography>;
             default:
-                return <Typography>Select a node to edit its details.</Typography>;
+                return (
+                    <TextField label="Work flow name" fullWidth margin="normal" value={label} onChange={(e) => handleInputChange(e.target.value, 'label')} />
+                );
         }
     };
 
     return (
         <Paper elevation={3} style={{ padding: '20px', margin: '20px', width: '250px' }}>
-            <Typography variant="h6" gutterBottom>
-                You can drag these tasks to the pane on the left.
-            </Typography>
-            <div>
-            <Button variant="contained" fullWidth color="secondary" style={{ margin: '10px 0' }} onDragStart={(event) => onDragStart(event, 'dbUpdate')} draggable>
-                DB Update
-            </Button>
-            </div><div>
-            <Button variant="contained" fullWidth  color="secondary" style={{ margin: '10px 0' }} onDragStart={(event) => onDragStart(event, 'email')} draggable>
-                Email
-            </Button></div>
-            {renderNodeDetails(selectedNode)}
+
+
+            <Box mt={2}>
+                <Button variant="contained" color="secondary" fullWidth onDragStart={(event) => onDragStart(event, 'DB Update')} draggable>
+                    DB Update
+                </Button>
+                <Button variant="contained" color="secondary" fullWidth onDragStart={(event) => onDragStart(event, 'Email')} draggable style={{ marginTop: '10px' }}>
+                    Email
+                </Button>
+            </Box>
+            <Typography mt={12} variant="h6" gutterBottom>Node Properties</Typography>
+            <Box mt={2}>
+                {renderPropertiesForm()}
+            </Box>
         </Paper>
     );
 };
