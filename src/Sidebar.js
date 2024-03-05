@@ -40,16 +40,16 @@ const Sidebar = ({ selectedNode }) => {
     };
 
     return (
-        <Paper elevation={3} style={{ padding: '20px', margin: '20px' }}>
+        <Paper elevation={3} style={{ padding: '20px', margin: '20px', width: '250px' }}>
             <Typography variant="h6" gutterBottom>
                 You can drag these tasks to the pane on the left.
             </Typography>
             <div>
-            <Button variant="contained" color="secondary" style={{ margin: '10px 0' }} onDragStart={(event) => onDragStart(event, 'dbUpdate')} draggable>
+            <Button variant="contained" fullWidth color="secondary" style={{ margin: '10px 0' }} onDragStart={(event) => onDragStart(event, 'dbUpdate')} draggable>
                 DB Update
             </Button>
             </div><div>
-            <Button variant="contained"  color="secondary" style={{ margin: '10px 0' }} onDragStart={(event) => onDragStart(event, 'email')} draggable>
+            <Button variant="contained" fullWidth  color="secondary" style={{ margin: '10px 0' }} onDragStart={(event) => onDragStart(event, 'email')} draggable>
                 Email
             </Button></div>
             {renderNodeDetails(selectedNode)}

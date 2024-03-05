@@ -67,6 +67,18 @@ const DnDFlow = () => {
         [reactFlowInstance],
     );
 
+    const clearFlow = () => {
+        setNodes([]);
+        setEdges([]);
+        setSelectedNode(null);
+    };
+
+    const submitFlow = () => {
+        // Implement your submit logic here
+        // For demonstration, logging to console
+        console.log("Submitting", { nodes, edges });
+    };
+
     return (
         <div className="dndflow" style={{ width: '100%', height: '900px' }}>
             <ReactFlowProvider>
@@ -84,6 +96,10 @@ const DnDFlow = () => {
                         fitView
                     >
                         <Controls />
+                        <div>
+                            <button onClick={clearFlow}>Clear</button>
+                            <button onClick={submitFlow}>Submit</button>
+                        </div>
                     </ReactFlow>
                 </div>
                 <Sidebar selectedNode={selectedNode} /> {/* Pass selectedNode to Sidebar */}
