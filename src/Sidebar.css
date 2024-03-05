@@ -1,0 +1,7 @@
+/* Sidebar.css */
+aside {
+    width: 250px; /* Set the width */
+    background-color: #f0f0f0; /* Background color */
+    padding: 20px; /* Padding around the content */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Shadow for depth */
+}
