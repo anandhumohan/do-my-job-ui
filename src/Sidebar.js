@@ -75,16 +75,16 @@ const Sidebar = ({ selectedNode, updateNodeData }) => {
     };
 
     return (
-        <Paper elevation={3} style={{ padding: '20px', margin: '20px', width: '250px' }}>
+        <Paper elevation={3} style={{ padding: '30px', margin: '20px', width: '250px' }}>
             <Box mt={2}>
                 <Button variant="contained" color="secondary" fullWidth onDragStart={(event) => onDragStart(event, 'DB Update')} draggable>
                     DB Update
                 </Button>
-                <Button variant="contained" color="secondary" fullWidth onDragStart={(event) => onDragStart(event, 'Email')} draggable style={{ marginTop: '10px' }}>
+                <Button variant="contained" color="secondary" fullWidth onDragStart={(event) => onDragStart(event, 'Email')} draggable style={{ marginTop: '5px' }}>
                     Email
                 </Button>
             </Box>
-            <Typography mt={12} variant="h6" gutterBottom>Node Properties</Typography>
+            <Typography mt={12} variant="h6" gutterBottom>Task Properties</Typography>
             <Box mt={2}>
                 {renderPropertiesForm()}
             </Box>
