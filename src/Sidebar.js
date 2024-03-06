@@ -2,14 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { TextField, Typography, Paper, Box, Button } from '@mui/material';
 
 const Sidebar = ({ selectedNode, updateNodeData }) => {
-    // Initialize state for each input field
     const [label, setLabel] = useState('');
     const [emailFrom, setEmailFrom] = useState('');
     const [emailTo, setEmailTo] = useState('');
     const [emailSubject, setEmailSubject] = useState('');
     const [emailBody, setEmailBody] = useState('');
 
-    // Effect to set input fields based on the selected node
     useEffect(() => {
         if (selectedNode) {
             setLabel(selectedNode.data.label || '');
@@ -18,7 +16,6 @@ const Sidebar = ({ selectedNode, updateNodeData }) => {
             setEmailSubject(selectedNode.data.subject || '');
             setEmailBody(selectedNode.data.body || '');
         } else {
-            // Reset all fields if no node is selected
             setLabel('');
             setEmailFrom('');
             setEmailTo('');
@@ -27,9 +24,7 @@ const Sidebar = ({ selectedNode, updateNodeData }) => {
         }
     }, [selectedNode]);
 
-    // Handler to update the node data and state
     const handleInputChange = (value, field) => {
-        // Update the local state
         switch (field) {
             case 'label':
                 setLabel(value);
@@ -50,7 +45,6 @@ const Sidebar = ({ selectedNode, updateNodeData }) => {
                 break;
         }
 
-        // Propagate changes to the node's data in React Flow
         if (selectedNode) {
             const updatedData = { ...selectedNode.data, [field]: value };
             updateNodeData(selectedNode.id, updatedData);
@@ -73,8 +67,6 @@ const Sidebar = ({ selectedNode, updateNodeData }) => {
                         <TextField label="Body" fullWidth multiline rows={4} margin="normal" value={emailBody} onChange={(e) => handleInputChange(e.target.value, 'body')} />
                     </>
                 );
-            case 'DB Update':
-                return <Typography></Typography>;
             default:
                 return (
                     <TextField label="Work flow name" fullWidth margin="normal" value={label} onChange={(e) => handleInputChange(e.target.value, 'label')} />
@@ -84,8 +76,6 @@ const Sidebar = ({ selectedNode, updateNodeData }) => {
 
     return (
         <Paper elevation={3} style={{ padding: '20px', margin: '20px', width: '250px' }}>
-
-
             <Box mt={2}>
                 <Button variant="contained" color="secondary" fullWidth onDragStart={(event) => onDragStart(event, 'DB Update')} draggable>
                     DB Update
