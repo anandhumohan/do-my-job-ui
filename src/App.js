@@ -91,15 +91,54 @@ const App = () => {
         // Placeholder values - you might want to create UI elements to capture these
         const workflowName = "My Workflow";
         const scheduleTime = new Date().toISOString();
+        const tasks = nodes.map(node => {
+            // Default task structure
+            let task = {
+                type: node.type,
+                label: node.data.label,
+            };
+
+            if (node.type === 'Email') {
+                task = {
+                    ...task,
+                    from: node.data.from,
+                    to: node.data.to,
+                    subject: node.data.subject,
+                    body: node.data.body,
+                };
+            }
+            return task;
+        });
 
         const jobChain = {
             workflowName: workflowName,
             scheduleTime: scheduleTime,
-            tasks: nodes.map(node => ({
-                type: node.type,
-                ...node.data // Spread operator to include all node data as task properties
-            }))
+            tasks: tasks,
         };
+        /*
+        const jobChain = {
+            workflowName: workflowName,
+            scheduleTime: scheduleTime,
+            tasks: nodes.map(node => {
+                // For email tasks, explicitly set the from, to, subject, and body properties
+                if (node.type === 'Email') {
+                    return {
+                        type: node.type,
+                        label: node.data.label,
+                        from: node.data.from,
+                        to: node.data.to,
+                        subject: node.data.subject,
+                        body: node.data.body
+                    };
+                } else {
+                    // For other task types, include all node data as task properties
+                    return {
+                        type: node.type,
+                        ...node.data
+                    };
+                }
+            })
+        };*/
 
         try {
             const response = await fetch('http://localhost:8080/api/tasks/schedule', {
