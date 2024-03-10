@@ -115,30 +115,7 @@ const App = () => {
             scheduleTime: scheduleTime,
             tasks: tasks,
         };
-        /*
-        const jobChain = {
-            workflowName: workflowName,
-            scheduleTime: scheduleTime,
-            tasks: nodes.map(node => {
-                // For email tasks, explicitly set the from, to, subject, and body properties
-                if (node.type === 'Email') {
-                    return {
-                        type: node.type,
-                        label: node.data.label,
-                        from: node.data.from,
-                        to: node.data.to,
-                        subject: node.data.subject,
-                        body: node.data.body
-                    };
-                } else {
-                    // For other task types, include all node data as task properties
-                    return {
-                        type: node.type,
-                        ...node.data
-                    };
-                }
-            })
-        };*/
+
 
         try {
             const response = await fetch('http://localhost:8080/api/tasks/schedule', {
